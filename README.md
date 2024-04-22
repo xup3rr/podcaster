@@ -1,8 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Podcaster
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It uses the iTunes API to fetch podcast data and displays it in a user-friendly interface.
 
 ## Getting Started
 
-First, run the development server:
+To get started with the project, follow these steps:
+
+1. Clone the repository to your local machine.
+
+2. Install the dependencies:
+
+```bash
+  npm install
+  # or
+  yarn install
+  # or
+  pnpm install
+  # or
+  bun install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +32,57 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   
+## Building and Running in Production Mode
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Build the application:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash 
+npm run build
+# or
+yarn build
+# or
+pnpm build
+# or
+bun build
+```
 
-## Learn More
+2. After the build is complete, you can start the application:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run start
+# or
+yarn start
+# or
+pnpm start
+# or
+bun start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Open http://localhost:3000 with your browser to see the result.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4. To stop the application, press Ctrl + C in the terminal.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- `src/`: Contains the source code for the application.
+  - `app/`: Contains the global layout and pages for the application.
+  - `components/`: Contains reusable React components.
+  - `constants/`: Contains constant values used throughout the application.
+  - `types/`: Contains TypeScript type definitions.
+  - `utils/`: Contains utility functions.
+
+## How it works
+
+The application fetches data from the iTunes API using two main functions: `fetchTopPodcasts` and `fetchPodcast`, located in `src/utils/fetchItunesPodcasts.ts.`
+
+`fetchTopPodcasts` fetches the top podcasts from the iTunes API, with an optional limit parameter that defaults to 100.
+
+`fetchPodcast` fetches a single podcast by its id.
+
+The fetched data is used in various parts of the application, such as in `src/app/podcast/[podcastId]/page.tsx,` where the `useQueries` hook from the `react-query` library is used to fetch the top podcasts and a specific podcast based on the `podcastId` parameter. The fetched data is then used to display the podcast details and its episodes.
+
+The `react-query` library also provides `caching` out of the box. This means that if the same data is fetched multiple times, react-query will serve the cached data instead of making a new request to the iTunes API. This improves the performance of the application and reduces the load on the iTunes API.
