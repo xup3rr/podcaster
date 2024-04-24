@@ -23,7 +23,7 @@ export const ReactQueryClientProvider = ({
 
   const persister = createSyncStoragePersister({
     key: "podcaster:query-cache",
-    storage: window.localStorage,
+    storage: typeof window !== "undefined" ? window.localStorage : undefined,
   });
 
   return (
