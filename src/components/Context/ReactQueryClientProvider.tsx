@@ -1,9 +1,11 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 
 /**
- * Provides the React Query client to the app with default options (staleTime: 24 hours)
+ * Provides the React Query client to the app with gcTime: 24 hours and localStorage persister.
  */
 export const ReactQueryClientProvider = ({
   children,
@@ -13,12 +15,23 @@ export const ReactQueryClientProvider = ({
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 1000 * 60 * 60 * 24, // 24 hours in milliseconds
+        gcTime: 1000 * 60 * 60 * 24, // 24 hours
+        staleTime: Infinity,
       },
     },
   });
 
+  const persister = createSyncStoragePersister({
+    key: "podcaster:query-cache",
+    storage: window.localStorage,
+  });
+
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister }}
+    >
+      {children}
+    </PersistQueryClientProvider>
   );
 };
